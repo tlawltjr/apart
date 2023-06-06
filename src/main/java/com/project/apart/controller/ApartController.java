@@ -18,10 +18,8 @@ public class ApartController {
     @Autowired
     private ApartService apartService;
 
-    @GetMapping({"/",""})
+    @GetMapping("")
     public String index()  {
-
-
 
         return "apart/index";
     }
@@ -32,12 +30,12 @@ public class ApartController {
         List<?> a = apartService.getCode(code,selectedValue);
         model.addAttribute("apart", a);
 
-        return "/apart/results";
+        return "apart/results";
     }
 
     @GetMapping("/result")
     public String result(){
-        return "/apart/result";
+        return "apart/result";
     }
 
 }
