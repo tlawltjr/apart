@@ -28,6 +28,7 @@ public class ApartServiceImpl implements ApartService {
         String result = getApi(urlBuilder);
         JSONParser parser = new JSONParser();
         JSONObject object = (JSONObject) parser.parse(result);
+        System.out.println("result==="+object);
 
         JSONArray jArr = (JSONArray) object.get("StanReginCd");
 
