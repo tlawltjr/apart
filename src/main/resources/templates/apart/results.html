@@ -130,10 +130,10 @@
             </div>
 
             <div class="col-md-6">
-                <div class="apart-map" th:each="result : ${apart}">
+                <div class="apart-map" th:each="result : ${apart}" >
                     <div id="map-${result.id}" style="width: 500px; height: 500px; top: 50px; "></div>
                     <script type="text/javascript"
-                            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=265e86e1135aa4e9e976471d64ee3d7c&libraries=services"></script>
+                            src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=265e86e1135aa4e9e976471d64ee3d7c&libraries=services"></script>
                     <script>
                         var mapContainer = document.getElementById('map-${result.id}'), // 지도를 표시할 div
                             mapOption = {
