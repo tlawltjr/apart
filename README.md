@@ -8,7 +8,7 @@
 ### 👥 개인 프로젝트
 
 ### 📝 프로젝트 설명
-  법정도 코드 조회 API, 아파트 실거래 가격 조회 API, kakao Map API
+  법정동 코드 조회 API, 아파트 실거래 가격 조회 API, kakao Map API
 
   
   ---
