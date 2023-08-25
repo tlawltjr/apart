@@ -33,9 +33,13 @@ public class ApartController {
         return "apart/results";
     }
 
-    @GetMapping("/result")
-    public String result(){
-        return "apart/result";
+    @GetMapping("/rentResults")
+    public String test(@RequestParam("region") String code,@RequestParam("selectedValue") String selectedValue ,Model model) throws Exception {
+
+        List<?> a = apartService.getRentals(code,selectedValue);
+        model.addAttribute("apart", a);
+
+        return "apart/rentResults";
     }
 
 }

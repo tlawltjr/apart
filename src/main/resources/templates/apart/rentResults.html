@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>호갱고고</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap"
+          rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&amp;display=swap"
+          rel="stylesheet"/>
+
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous"/>
+
+
+    <style>
+        .masthead {
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .masthead::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 투명도 조절 가능 */
+            z-index: -1;
+        }
+
+        .masthead::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 투명도 조절 가능 */
+            z-index: -1;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #2a5555;
+            opacity: 0.85;
+            z-index: -1;
+        }
+
+        .bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        .accordion {
+            width: 450px;
+        }
+
+
+    </style>
+</head>
+<body>
+<!-- Background Video-->
+<div class="bg-overlay"></div>
+<video class="bg-video" playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+    <source src="/assets/mp4/bg.mp4" type="video/mp4"/>
+</video>
+<!-- Masthead-->
+<div class="masthead">
+    <div class="container">
+        <h1 class="fst-italic lh-1 mb-4" style="margin-top: 15px; color: white">호갱고고</h1>
+        <p class="mb-5"  style="margin-top: 15px; color: white">아파트 실거래 매매 정보 사이트</p>
+        <div class="row" >
+            <div class="col-md-6" >
+                <div class="apart-accordion" th:each="result, iterStat : ${apart}">
+                    <div class="masthead-content text-white">
+                        <div class="container-fluid px-4 px-lg-0">
+                            <div class="accordion" id="accordionExample" th:if="${not #lists.isEmpty(apart)}">
+                                <div class="card" style="width: 450px;">
+                                    <div th:class="${'card ' + (iterStat.index == 0 ? 'active' : '')}">
+                                        <button class="btn btn-dark btn-sm" type="button" data-toggle="collapse"
+                                                th:data-target="'#collapse-' + ${result.id}"
+                                                th:aria-controls="'collapse-' + ${result.id}"
+                                                th:text="${result.id + ' : ' + result.bjd + ' ' + result.apart_name}">
+                                        </button>
+                                    </div>
+                                    <div th:id="'collapse-' + ${result.id}" class="collapse"
+                                         th:aria-labelledby="'headingOne-' + ${result.id}"
+                                         data-parent="#accordionExample">
+                                        <div class="card-body" style="background-color: darkgray;">
+                                            <h4>건물정보</h4>
+                                            <p th:text="'건물명 : ' + ${result.apart_name}"></p>
+                                            <p th:text="'건축년도 : ' + ${result.const_year}"></p>
+                                            <p th:text="'전용면적 : ' + ${result.dedicated_area}"></p>
+                                            <p th:text="'층 : ' + ${result.floor}"></p>
+                                            <p th:text="'주소 : ' + ${result.bjd + result.post_zip}"></p>
+
+                                            <h4>거래정보</h4>
+                                            <p th:text="'거래일자 : ' + ${result.year} + '/' + ${result.month} + '/' + ${result.day}"></p>
+                                            <p th:text="'보증금 or 전세금: ' + ${result.deposit} + '만원'"></p>
+                                            <p th:text="'월세 : ' + ${result.monthlyRent} + '만원'"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div  class="col-md-6">
+                <div class="apart-map" th:each="result : ${apart}" >
+                    <div id="map-${result.id}" style="width: 500px; height: 500px; top: 50px; "></div>
+                    <script type="text/javascript"
+                            src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=265e86e1135aa4e9e976471d64ee3d7c&libraries=services"></script>
+                    <script>
+                        var mapContainer = document.getElementById('map-${result.id}'), // 지도를 표시할 div
+                            mapOption = {
+                                center: new kakao.maps.LatLng(37.502, 127.026581), // 지도의 중심좌표
+                                level: 1 // 지도의 확대 레벨
+                            };
+
+                        // 지도를 생성합니다X
+                        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+                        // 주소-좌표 변환 객체를 생성합니다
+                        var geocoder = new kakao.maps.services.Geocoder();
+
+                        // 주소로 좌표를 검색합니다
+                        geocoder.addressSearch("[[${result.selected}]] [[${result.bjd}]] [[${result.post_zip}]]", function (result, status) {
+
+                            // 정상적으로 검색이 완료됐으면
+                            if (status === kakao.maps.services.Status.OK) {
+
+                                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                                // 결과값으로 받은 위치를 마커로 표시합니다
+                                var marker = new kakao.maps.Marker({
+                                    map: map,
+                                    position: coords
+                                });
+
+                                // 인포윈도우로 장소에 대한 설명을 표시합니다
+                                var infowindow = new kakao.maps.InfoWindow({
+                                    content: '<div style="width:150px;text-align:center;padding:6px 0; color: #0d0d0d">[[${result.apart_name}]]</div>'
+                                });
+                                infowindow.open(map, marker);
+
+                                // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                                map.setCenter(coords);
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- js -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>

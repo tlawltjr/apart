@@ -15,6 +15,8 @@ public interface ApartService {
 
     List<ApartDTO> getCode(String code, String selectedValue) throws Exception;
 
+    List<ApartDTO> getRentals(String code, String selectedValue) throws Exception;
+
     default String getApi(StringBuilder urlBuilder) throws Exception {
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

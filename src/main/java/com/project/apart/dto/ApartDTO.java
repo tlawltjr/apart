@@ -30,6 +30,12 @@ public class ApartDTO {
     private String selected;
     private int id;
 
+    //전월세
+    private Object deposit;//보증금
+    //private String pDeposit;//종전 보증금
+    private Long monthlyRent;//월세
+    //private String pMonthlyRent;//종전 월세
+
 
 
 }

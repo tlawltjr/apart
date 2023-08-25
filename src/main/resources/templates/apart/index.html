@@ -32,7 +32,11 @@
                     <!-- To make this form functional, sign up at-->
                     <!-- https://startbootstrap.com/solution/contact-forms-->
                     <!-- to get an API token!-->
-                    <form id="contactForm"  action="/results" method="get">
+                    <form id="reservationForm" method="get">
+                        <input type="radio" name="reservation_type"
+                               value="results" required>매매 검색<br>
+                        <input type="radio" name="reservation_type"
+                               value="rentResults" required>전월세 검색<br>
                         <div class="row input-group-newsletter">
                             <div class="col">
 
@@ -81,9 +85,20 @@
                                 <input class="form-control" type="text" value="" id="selectedValue" name="selectedValue" placeholder="조회할 날짜 ex)201512" maxlength="6" data-sb-validations="required" />
                                 <br>
                                 <input class="form-control" id="region" type="text"  name="region" placeholder="지역 입력하세요. ex)서울특별시 종로구, 경기도 동두천시" size="80" data-sb-validations="required" />
+                                <button class="btn btn-primary" type="submit" >검색하기</button>
                                 <br>
-                                <button class="btn btn-primary disabled" id="submitButton" type="submit">검색하기</button>
                                 <script>
+                                    const reservationForm = document.getElementById('reservationForm');
+                                    const roundTripRadio = reservationForm.querySelector('input[value="results"]');
+                                    const oneWayRadio = reservationForm.querySelector('input[value="rentResults"]');
+
+                                    roundTripRadio.addEventListener('change', function () {
+                                        reservationForm.action = '/results';
+                                    });
+
+                                    oneWayRadio.addEventListener('change', function () {
+                                        reservationForm.action = '/rentResults';
+                                    });
                                     function showSelectedValue() {
                                         var year = document.getElementById("year").value;
                                         var month = document.getElementById("month").value;
@@ -95,13 +110,12 @@
                                     function updateSubmitButton() {
                                         var region = document.getElementById("region").value;
                                         var selectedValue = document.getElementById("selectedValue").value;
-                                        var submitButton = document.getElementById("submitButton");
 
-                                        if (region !== "" && selectedValue !== "") {
-                                            submitButton.classList.remove("disabled");
-                                        } else {
-                                            submitButton.classList.add("disabled");
-                                        }
+                                        // if (region !== "" && selectedValue !== "") {
+                                        //     submitButton.classList.remove("disabled");
+                                        // } else {
+                                        //     submitButton.classList.add("disabled");
+                                        // }
                                     }
 
                                     // 입력 필드의 값이 변경될 때마다 업데이트 함수를 호출합니다.
